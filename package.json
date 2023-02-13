@@ -1,0 +1,27 @@
+{
+  "name": "graphql-stepfunction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "compile": "tsc && node ./dist/src/index.js",
+    "dev": "nodemon -e ts --exec \"npm run compile\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.3.2",
+    "apollo-server-express": "^3.11.1",
+    "aws-sdk": "^2.1310.0",
+    "graphql": "^16.6.0",
+    "graphql-type-json": "^0.3.2",
+    "tsc-watch": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.9.5"
+  }
+}

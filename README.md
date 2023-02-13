@@ -1,1 +1,1 @@
-# GraphQL-StepFunctionAPI
+# GraphQL-API-StepFunction
