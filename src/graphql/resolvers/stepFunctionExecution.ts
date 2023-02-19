@@ -21,14 +21,11 @@ const resolvers = {
 						executionArn: exectuionId,
 					})
 					.promise();
-
-				console.log('Execution Arn:', exectuionId);
-				console.log('Status:', status);
 				return status;
 			} catch (error) {
-				console.error(error);
-				throw new Error(
-					'An error occurred while fetching the status of the Step Function execution'
+				console.error(
+					'An error occurred while fetching the status of the Step Function execution',
+					error
 				);
 			}
 		},
@@ -60,9 +57,9 @@ const resolvers = {
 					.promise();
 				return executionArn;
 			} catch (error) {
-				console.error(error);
-				throw new Error(
-					'An error occurred while starting the Step Function execution'
+				console.error(
+					'An error occurred while starting the Step Function execution',
+					error
 				);
 			}
 		},
