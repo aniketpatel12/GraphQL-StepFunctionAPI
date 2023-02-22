@@ -3,8 +3,8 @@ import { gql } from 'apollo-server-express';
 const typeDefs = gql`
 	enum IssueType {
 		Task
-		Bug
-		Story
+		Problem
+		Service_Request
 	}
 	enum IssuePriority {
 		Highest

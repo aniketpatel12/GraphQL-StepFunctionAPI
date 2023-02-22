@@ -1,7 +1,7 @@
 export enum IssueType {
 	Task = 'Task',
-	Bug = 'Bug',
-	Story = 'Story',
+	Problem = '[System] Problem',
+	Service_Request = '[System] Service request',
 }
 
 export enum IssuePriority {
