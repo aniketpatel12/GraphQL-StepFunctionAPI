@@ -18,6 +18,7 @@
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "graphql-type-json": "^0.3.2",
+    "jira.js": "^2.16.0",
     "lodash.merge": "^4.6.2"
   },
   "devDependencies": {
