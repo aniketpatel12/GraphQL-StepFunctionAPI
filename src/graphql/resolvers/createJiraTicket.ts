@@ -1,59 +1,36 @@
-import { GraphQLJSON } from 'graphql-type-json';
+import { IssueType } from './../../types/createJiraTicket';
 import { client } from '../..';
-
-export enum IssueType {
-	TASK = 'task',
-	BUG = 'bug',
-	STORY = 'story',
-}
-
-export enum IssuePriority {
-	HIGHEST = '5',
-	HIGH = '4',
-	MEDIUM = '3',
-	LOW = '2',
-	LOWEST = '1',
-}
-
-type TicketType = {
-	title: string;
-	type: IssueType;
-	priority: IssuePriority;
-	projectId: number;
-	description: string | null;
-};
+import { TicketType } from '../../types/createJiraTicket';
+import { IssuePriority } from '../../types/createJiraTicket';
 
 const resolvers = {
-	JSON: GraphQLJSON,
 	Mutation: {
 		createJiraTicket: async (_, { input }: { input: TicketType }) => {
 			try {
 				const project = await client.projects.getProject({
 					projectIdOrKey: input.projectId,
 				});
-
-				if (project) {
-					const { id } = await client.issues.createIssue({
-						fields: {
-							summary: input.title,
-							issuetype: {
-								name: input.type,
-							},
-							project: {
-								key: project.key,
-							},
-							description: input.description,
-							priority: {
-								id: input.priority,
-							},
+				console.log(input);
+				const { id } = await client.issues.createIssue({
+					fields: {
+						project: {
+							key: project.key,
 						},
-					});
+						summary: input.title,
+						description: input.description,
+						issuetype: {
+							name: IssueType[input.type],
+						},
+						priority: {
+							id: IssuePriority[input.priority],
+						},
+					},
+				});
 
-					return id;
-				}
+				return id;
 			} catch (error) {
 				console.error(
-					'An error occurred while creating jira issue',
+					'An error occurred while creating jira ticket',
 					error
 				);
 			}
