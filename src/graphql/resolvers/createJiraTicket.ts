@@ -1,7 +1,9 @@
+import { GraphQLJSON } from 'graphql-type-json';
 import { IssueType, TicketType, IssuePriority } from '../../types';
 import { client } from '../..';
 
 const resolvers = {
+	JSON: GraphQLJSON,
 	Mutation: {
 		createJiraTicket: async (_, { input }: { input: TicketType }) => {
 			try {
