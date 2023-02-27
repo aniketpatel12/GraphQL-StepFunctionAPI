@@ -1,3 +1,7 @@
+export type DynamicJson = {
+	[key: string]: string;
+};
+
 export enum IssueType {
 	Task = 'Task',
 	Problem = '[System] Problem',
@@ -17,5 +21,5 @@ export type TicketType = {
 	type: IssueType;
 	priority: IssuePriority;
 	projectId: string;
-	description: string | null;
+	description?: DynamicJson;
 };

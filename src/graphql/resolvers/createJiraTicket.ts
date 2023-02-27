@@ -1,7 +1,5 @@
-import { IssueType } from './../../types/createJiraTicket';
+import { IssueType, TicketType, IssuePriority } from '../../types';
 import { client } from '../..';
-import { TicketType } from '../../types/createJiraTicket';
-import { IssuePriority } from '../../types/createJiraTicket';
 
 const resolvers = {
 	Mutation: {
@@ -10,19 +8,21 @@ const resolvers = {
 				const project = await client.projects.getProject({
 					projectIdOrKey: input.projectId,
 				});
-				console.log(input);
+
+				const { title, type, priority, projectId, description } = input;
+
 				const { id } = await client.issues.createIssue({
 					fields: {
 						project: {
 							key: project.key,
 						},
-						summary: input.title,
-						description: input.description,
+						summary: title,
+						description: JSON.stringify(description),
 						issuetype: {
-							name: IssueType[input.type],
+							name: IssueType[type],
 						},
 						priority: {
-							id: IssuePriority[input.priority],
+							id: IssuePriority[priority],
 						},
 					},
 				});

@@ -1,11 +1,14 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
+	scalar JSON
+
 	enum IssueType {
 		Task
 		Problem
 		Service_Request
 	}
+
 	enum IssuePriority {
 		Highest
 		High
@@ -13,22 +16,17 @@ const typeDefs = gql`
 		Low
 		Lowest
 	}
-	type TicketType {
+
+	input TicketInputType {
 		title: String!
 		type: IssueType!
 		priority: IssuePriority!
 		projectId: String!
-		description: String
+		description: JSON
 	}
-	input TicketType {
-		title: String!
-		type: IssueType!
-		priority: IssuePriority!
-		projectId: String!
-		description: String
-	}
+
 	type Mutation {
-		createJiraTicket(input: TicketType!): String!
+		createJiraTicket(input: TicketInputType!): String!
 	}
 `;
 
