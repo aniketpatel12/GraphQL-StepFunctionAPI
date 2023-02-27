@@ -2,12 +2,14 @@ export type DynamicJson = {
 	[key: string]: string;
 };
 
+// Override auto genrated types
 export enum IssueType {
 	Task = 'Task',
 	Problem = '[System] Problem',
 	Service_Request = '[System] Service request',
 }
 
+// Override auto genrated types
 export enum IssuePriority {
 	Highest = '1',
 	High = '2',
@@ -15,11 +17,3 @@ export enum IssuePriority {
 	Low = '4',
 	Lowest = '5',
 }
-
-export type TicketType = {
-	title: string;
-	type: IssueType;
-	priority: IssuePriority;
-	projectId: string;
-	description?: DynamicJson;
-};

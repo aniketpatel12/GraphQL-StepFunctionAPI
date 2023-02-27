@@ -1,0 +1,35 @@
+scalar JSON
+
+type Mutation {
+	getExecutionArn(input: JSON): JSON
+}
+
+type Query {
+	getExecutionStatus(exectuionId: String!): String!
+}
+
+enum IssueType {
+	Task
+	Problem
+	Service_Request
+}
+
+enum IssuePriority {
+	Highest
+	High
+	Medium
+	Low
+	Lowest
+}
+
+input TicketInputType {
+	title: String!
+	type: IssueType!
+	priority: IssuePriority!
+	projectId: String!
+	description: JSON
+}
+
+type Mutation {
+	createJiraTicket(input: TicketInputType!): String!
+}
