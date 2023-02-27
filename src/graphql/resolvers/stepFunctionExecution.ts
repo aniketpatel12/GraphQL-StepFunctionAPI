@@ -1,10 +1,9 @@
 import AWS from 'aws-sdk';
 import { GraphQLJSON } from 'graphql-type-json';
 import { stepFunctions } from '../..';
+import { DynamicJson } from './../../types';
 
-type DynamicJsonWithStepFunctionName = {
-	[key: string]: string;
-} & {
+type DynamicJsonWithStepFunctionName = DynamicJson & {
 	stateFunctionName: string;
 };
 
