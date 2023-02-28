@@ -1,6 +1,6 @@
 import merge from 'lodash.merge';
-import stepFunctionExecution from './stepFunctionExecution';
-import createJiraTicket from './createJiraTicket';
+import stepFunctionExecution from './aws';
+import createJiraTicket from './jira';
 
 const resolvers = merge({}, stepFunctionExecution, createJiraTicket);
 
