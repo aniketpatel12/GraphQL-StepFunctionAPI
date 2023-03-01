@@ -1,4 +1,4 @@
-import { getExecutionStatus, getExecutionArn } from '../../dataSources/aws';
+import AwsClient from '../../dataSources/aws';
 import { GraphQLJSON } from 'graphql-type-json';
 import { Resolvers } from '../../__generated__/resolvers-types';
 
@@ -7,11 +7,12 @@ const resolvers: Resolvers = {
 
 	Query: {
 		getExecutionStatus: (_parent, { exectuionId }) =>
-			getExecutionStatus(exectuionId),
+			AwsClient.getExecutionStatus(exectuionId),
 	},
 
 	Mutation: {
-		getExecutionArn: (_parent, { input }) => getExecutionArn(input),
+		getExecutionArn: (_parent, { input }) =>
+			AwsClient.getExecutionArn(input),
 	},
 };
 

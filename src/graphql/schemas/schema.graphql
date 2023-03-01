@@ -1,19 +1,24 @@
+# Dynamic json type
 scalar JSON
 
+# Mutation to get execution ARN
 type Mutation {
 	getExecutionArn(input: JSON): JSON
 }
 
+# Query to get execution status
 type Query {
 	getExecutionStatus(exectuionId: String!): String!
 }
 
+# List of issue type for Jira ticket
 enum IssueType {
 	Task
 	Problem
 	Service_Request
 }
 
+# List of issue priority for Jira ticket
 enum IssuePriority {
 	Highest
 	High
@@ -22,6 +27,7 @@ enum IssuePriority {
 	Lowest
 }
 
+# Required fields to create a Jira ticket
 input TicketInputType {
 	title: String!
 	type: IssueType!
@@ -30,6 +36,7 @@ input TicketInputType {
 	description: JSON
 }
 
+# Mutation to create a Jira ticket
 type Mutation {
 	createJiraTicket(input: TicketInputType!): String!
 }
