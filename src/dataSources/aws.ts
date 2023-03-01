@@ -1,5 +1,6 @@
-import AWS from 'aws-sdk';
+import AWS, { StepFunctions, STS } from 'aws-sdk';
 import { DynamicJson } from '../types';
+import { AssumeRoleRequest } from 'aws-sdk/clients/sts';
 
 AWS.config.update({ region: 'us-east-1' });
 // AWS.config.loadFromPath('./config.json');
@@ -39,9 +40,28 @@ export const getExecutionArn = async (
 		delete stepFunctionInputCopy.stateFunctionName;
 
 		const region = 'us-east-1';
-		const sts = new AWS.STS();
-		const data = await sts.getCallerIdentity().promise();
-		const stateMachineArn = `arn:aws:states:${region}:${data.Account}:stateMachine:${stateMachineName}`;
+
+		// Create an STS client with your AWS credentials
+		const sts = new STS();
+		
+		// Assume the specified role to get temporary credentials
+		const assumeRoleParams: AssumeRoleRequest = {
+			RoleArn: "<Role-Arn>",
+			RoleSessionName: 'AssumeRoleSession'
+		};
+
+		const assumedRole = await sts.assumeRole(assumeRoleParams).promise();
+		const accuntId = assumedRole.AssumedRoleUser.Arn.split('::')[1].split(":")[0];
+		const stateMachineArn = `arn:aws:states:${region}:${accuntId}:stateMachine:${stateMachineName}`;
+
+		// Create a StepFunctions client with the temporary credentials
+		const stepFunctions = new StepFunctions({
+		credentials: {
+			accessKeyId: assumedRole.Credentials?.AccessKeyId ?? '',
+			secretAccessKey: assumedRole.Credentials?.SecretAccessKey ?? '',
+			sessionToken: assumedRole.Credentials?.SessionToken ?? ''
+		}
+		});
 
 		// Start an execution
 		const { executionArn } = await stepFunctions
