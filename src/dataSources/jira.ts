@@ -1,47 +1,72 @@
 import { Version3Client } from 'jira.js';
-import {
-	IssuePriority,
-	IssueType,
-	TicketInputType,
-} from '../__generated__/resolvers-types';
+import { TicketInputType } from '../__generated__/resolvers-types';
+import { CreateIssue } from 'jira.js/out/version3/parameters';
 
-const client = new Version3Client({
-	host: process.env.JIRA_HOST,
-	authentication: {
-		basic: {
-			email: process.env.JIRA_EMAIL,
-			apiToken: process.env.JIRA_API_TOKEN,
-		},
-	},
-	newErrorHandling: true,
-});
+class JiraDataSource {
+	private client: Version3Client;
 
-export const createJiraTicket = async (input: TicketInputType) => {
-	try {
-		const { title, type, priority, projectId, description } = input;
+	constructor(config: { host: string; email: string; apiToken: string }) {
+		// Initialize the Jira Client
+		this.client = new Version3Client({
+			host: config.host,
+			authentication: {
+				basic: {
+					email: config.email,
+					apiToken: config.apiToken,
+				},
+			},
+			newErrorHandling: true,
+		});
+	}
 
-		const project = await client.projects.getProject({
+	getProject = async (projectId: string) => {
+		return await this.client.projects.getProject({
 			projectIdOrKey: projectId,
 		});
+	};
 
-		const { id } = await client.issues.createIssue({
+	createJiraTicketTemplate = (
+		project: { key: string } & TicketInputType
+	): CreateIssue => {
+		return {
 			fields: {
 				project: {
 					key: project.key,
 				},
-				summary: title,
-				description: JSON.stringify(description),
+				summary: project.title,
+				description: JSON.stringify(project.description),
 				issuetype: {
-					name: IssueType[type],
+					name: project.type,
 				},
 				priority: {
-					id: IssuePriority[priority],
+					id: project.priority,
 				},
 			},
-		});
+		};
+	};
 
-		return id;
-	} catch (error) {
-		console.error('An error occurred while creating jira ticket', error);
-	}
-};
+	createJiraTicket = async (input: TicketInputType) => {
+		try {
+			const { projectId } = input;
+
+			const { key } = await this.getProject(projectId);
+
+			const { id } = await this.client.issues.createIssue(
+				this.createJiraTicketTemplate({ key, ...input })
+			);
+			return id;
+		} catch (error) {
+			console.error(
+				'An error occurred while creating jira ticket',
+				error
+			);
+		}
+	};
+}
+
+// Singleton Jira Instance
+export default new JiraDataSource({
+	host: process.env.JIRA_HOST,
+	email: process.env.JIRA_EMAIL,
+	apiToken: process.env.JIRA_API_TOKEN,
+});
