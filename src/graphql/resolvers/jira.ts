@@ -19,8 +19,17 @@ const resolvers: Resolvers = {
 		Lowest: '5',
 	},
 
+	IssueResolution: {
+		Done: 'Done',
+		Wont_Do: "Won't Do",
+		Duplicate: 'Duplicate',
+		Declined: 'Declined',
+	},
+
 	Mutation: {
 		createJiraTicket: (_parent, { input }) => Jira.createJiraTicket(input),
+
+		closeJiraTicket: (_parent, { input }) => Jira.closeJiraTicket(input),
 	},
 };
 

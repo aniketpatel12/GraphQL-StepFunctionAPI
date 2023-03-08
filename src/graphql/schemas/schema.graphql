@@ -36,7 +36,23 @@ input TicketInputType {
 	description: JSON
 }
 
-# Mutation to create a Jira ticket
+# List of resolutions
+enum IssueResolution {
+	Done
+	Wont_Do
+	Duplicate
+	Declined
+}
+
+# Required fields to close Jira ticket
+input CloseJiraInputType {
+	key: String!
+	resolution: IssueResolution!
+	fields: JSON
+}
+
+# Mutation to create/close a Jira ticket
 type Mutation {
 	createJiraTicket(input: TicketInputType!): String!
+	closeJiraTicket(input: CloseJiraInputType!): JSON!
 }

@@ -15,12 +15,25 @@ export type Scalars = {
   JSON: any;
 };
 
+export type CloseJiraInputType = {
+  fields?: InputMaybe<Scalars['JSON']>;
+  key: Scalars['String'];
+  resolution: IssueResolution;
+};
+
 export enum IssuePriority {
   High = 'High',
   Highest = 'Highest',
   Low = 'Low',
   Lowest = 'Lowest',
   Medium = 'Medium'
+}
+
+export enum IssueResolution {
+  Declined = 'Declined',
+  Done = 'Done',
+  Duplicate = 'Duplicate',
+  WontDo = 'Wont_Do'
 }
 
 export enum IssueType {
@@ -31,8 +44,14 @@ export enum IssueType {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  closeJiraTicket: Scalars['JSON'];
   createJiraTicket: Scalars['String'];
   getExecutionArn?: Maybe<Scalars['JSON']>;
+};
+
+
+export type MutationCloseJiraTicketArgs = {
+  input: CloseJiraInputType;
 };
 
 
@@ -134,7 +153,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  CloseJiraInputType: CloseJiraInputType;
   IssuePriority: IssuePriority;
+  IssueResolution: IssueResolution;
   IssueType: IssueType;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -146,6 +167,7 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
+  CloseJiraInputType: CloseJiraInputType;
   JSON: Scalars['JSON'];
   Mutation: {};
   Query: {};
@@ -158,6 +180,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  closeJiraTicket?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationCloseJiraTicketArgs, 'input'>>;
   createJiraTicket?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateJiraTicketArgs, 'input'>>;
   getExecutionArn?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, Partial<MutationGetExecutionArnArgs>>;
 }>;

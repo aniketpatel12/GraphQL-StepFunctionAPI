@@ -1,5 +1,8 @@
 import { Version3Client } from 'jira.js';
-import { TicketInputType } from '../__generated__/resolvers-types';
+import {
+	CloseJiraInputType,
+	TicketInputType,
+} from '../__generated__/resolvers-types';
 import { CreateIssue } from 'jira.js/out/version3/parameters';
 
 class JiraDataSource {
@@ -60,6 +63,33 @@ class JiraDataSource {
 				'An error occurred while creating jira ticket',
 				error
 			);
+		}
+	};
+
+	closeJiraTicket = async (input: CloseJiraInputType) => {
+		try {
+			const { key, resolution } = input;
+
+			// const possibleTransitions = await this.client.issues.getTransitions({
+			// 	issueIdOrKey: key,
+			// });
+
+			// console.log(possibleTransitions);
+
+			await this.client.issues.doTransition({
+				issueIdOrKey: key,
+				transition: {
+					id: '61',
+				},
+				fields: {
+					resolution: {
+						name: resolution,
+					},
+				},
+			});
+			return JSON.stringify({ Success: true });
+		} catch (error) {
+			console.error('An error occurred while closing jira ticket', error);
 		}
 	};
 }
