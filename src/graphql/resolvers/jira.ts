@@ -30,6 +30,9 @@ const resolvers: Resolvers = {
 		createJiraTicket: (_parent, { input }) => Jira.createJiraTicket(input),
 
 		closeJiraTicket: (_parent, { input }) => Jira.closeJiraTicket(input),
+
+		moveToInProgressTicket: (_parent, { input }) =>
+			Jira.moveToInProgressTicket(input),
 	},
 };
 

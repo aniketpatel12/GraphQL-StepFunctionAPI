@@ -5,6 +5,11 @@ import {
 } from '../__generated__/resolvers-types';
 import { CreateIssue } from 'jira.js/out/version3/parameters';
 
+enum TRANSITION_CODE {
+	CLOSE_JIRA = '61',
+	IN_PROGRESS = '11',
+}
+
 class JiraDataSource {
 	private client: Version3Client;
 
@@ -66,20 +71,31 @@ class JiraDataSource {
 		}
 	};
 
+	moveToInProgressTicket = async (input: { key: string }) => {
+		try {
+			await this.client.issues.doTransition({
+				issueIdOrKey: input.key,
+				transition: {
+					id: TRANSITION_CODE.IN_PROGRESS,
+				},
+			});
+			return JSON.stringify({ Success: true });
+		} catch (error) {
+			console.error(
+				'An error occurred while moving jira ticket to In Progress',
+				error
+			);
+		}
+	};
+
 	closeJiraTicket = async (input: CloseJiraInputType) => {
 		try {
 			const { key, resolution } = input;
 
-			// const possibleTransitions = await this.client.issues.getTransitions({
-			// 	issueIdOrKey: key,
-			// });
-
-			// console.log(possibleTransitions);
-
 			await this.client.issues.doTransition({
 				issueIdOrKey: key,
 				transition: {
-					id: '61',
+					id: TRANSITION_CODE.CLOSE_JIRA,
 				},
 				fields: {
 					resolution: {

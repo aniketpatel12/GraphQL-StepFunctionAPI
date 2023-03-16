@@ -6,8 +6,6 @@ dotenv.config();
 import typeDefs from './graphql/schemas';
 import resolvers from './graphql/resolvers';
 
-// Load environment variables
-
 const PORT = process.env.PORT || 4000;
 
 const start = async () => {

@@ -51,8 +51,14 @@ input CloseJiraInputType {
 	fields: JSON
 }
 
+#  Required fields to move Jira ticket to "In Progress"
+input MoveToInProgressJiraInputType {
+	key: String!
+}
+
 # Mutation to create/close a Jira ticket
 type Mutation {
 	createJiraTicket(input: TicketInputType!): String!
 	closeJiraTicket(input: CloseJiraInputType!): JSON!
+	moveToInProgressTicket(input: MoveToInProgressJiraInputType): JSON!
 }
