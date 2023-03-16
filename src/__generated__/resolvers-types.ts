@@ -42,11 +42,16 @@ export enum IssueType {
   Task = 'Task'
 }
 
+export type MoveToInProgressJiraInputType = {
+  key: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   closeJiraTicket: Scalars['JSON'];
   createJiraTicket: Scalars['String'];
   getExecutionArn?: Maybe<Scalars['JSON']>;
+  moveToInProgressTicket: Scalars['JSON'];
 };
 
 
@@ -62,6 +67,11 @@ export type MutationCreateJiraTicketArgs = {
 
 export type MutationGetExecutionArnArgs = {
   input?: InputMaybe<Scalars['JSON']>;
+};
+
+
+export type MutationMoveToInProgressTicketArgs = {
+  input?: InputMaybe<MoveToInProgressJiraInputType>;
 };
 
 export type Query = {
@@ -158,6 +168,7 @@ export type ResolversTypes = ResolversObject<{
   IssueResolution: IssueResolution;
   IssueType: IssueType;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
+  MoveToInProgressJiraInputType: MoveToInProgressJiraInputType;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -169,6 +180,7 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   CloseJiraInputType: CloseJiraInputType;
   JSON: Scalars['JSON'];
+  MoveToInProgressJiraInputType: MoveToInProgressJiraInputType;
   Mutation: {};
   Query: {};
   String: Scalars['String'];
@@ -183,6 +195,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   closeJiraTicket?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationCloseJiraTicketArgs, 'input'>>;
   createJiraTicket?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateJiraTicketArgs, 'input'>>;
   getExecutionArn?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, Partial<MutationGetExecutionArnArgs>>;
+  moveToInProgressTicket?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, Partial<MutationMoveToInProgressTicketArgs>>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
