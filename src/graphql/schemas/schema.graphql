@@ -56,9 +56,17 @@ input MoveToInProgressJiraInputType {
 	key: String!
 }
 
+#  Required fields to update Jira comment
+input UpdateJiraCommentInputType {
+	key: String!
+	commentId: String!
+	body: String!
+}
+
 # Mutation to create/close a Jira ticket
 type Mutation {
 	createJiraTicket(input: TicketInputType!): String!
 	closeJiraTicket(input: CloseJiraInputType!): JSON!
 	moveToInProgressTicket(input: MoveToInProgressJiraInputType): JSON!
+	UpdateJiraComment(input: UpdateJiraCommentInputType): JSON!
 }

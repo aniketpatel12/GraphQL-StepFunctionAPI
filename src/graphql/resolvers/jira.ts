@@ -33,6 +33,9 @@ const resolvers: Resolvers = {
 
 		moveToInProgressTicket: (_parent, { input }) =>
 			Jira.moveToInProgressTicket(input),
+
+		UpdateJiraComment: (_parent, { input }) =>
+			Jira.updateJiraComment(input),
 	},
 };
 
