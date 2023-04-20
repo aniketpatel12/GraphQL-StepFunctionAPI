@@ -1,5 +1,6 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
+import './dataSources/soap';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
