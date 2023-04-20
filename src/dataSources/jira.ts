@@ -2,6 +2,7 @@ import { Version3Client } from 'jira.js';
 import {
 	CloseJiraInputType,
 	TicketInputType,
+	UpdateJiraCommentInputType,
 } from '../__generated__/resolvers-types';
 import { CreateIssue } from 'jira.js/out/version3/parameters';
 
@@ -106,6 +107,39 @@ class JiraDataSource {
 			return JSON.stringify({ Success: true });
 		} catch (error) {
 			console.error('An error occurred while closing jira ticket', error);
+		}
+	};
+
+	updateJiraComment = async (input: UpdateJiraCommentInputType) => {
+		try {
+			const { key, commentId, body } = input;
+
+			await this.client.issueComments.updateComment({
+				issueIdOrKey: key,
+				id: commentId,
+				body: {
+					type: 'doc',
+					version: 1,
+					content: [
+						{
+							type: 'paragraph',
+							content: [
+								{
+									type: 'text',
+									text: body,
+								},
+							],
+						},
+					],
+				},
+			});
+
+			return JSON.stringify({ Success: true });
+		} catch (error) {
+			console.error(
+				'An error occurred while updating jira comment',
+				error
+			);
 		}
 	};
 }
